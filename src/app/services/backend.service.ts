@@ -20,4 +20,13 @@ export class BackendService {
   saveTodo(todo:any){
     return this.http.post<any>(Config.apiUrl+'/todo', todo)
   }
+
+  updateTodo(todo:any){
+    return this.http.put<any>(Config.apiUrl+'/todo', todo)
+  }
+
+  deleteTodo(id:number){
+   
+    return this.http.delete<any>(Config.apiUrl+'/todo/'+id)
+  }
 }

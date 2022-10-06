@@ -18,13 +18,16 @@ export class AppComponent {
   todos: any[] = []
 
   description: any
+  descriptionEdit: any
+  todoEdit: any 
+  deleteId: any
 
   getTodos(){
     this.backendService.getTodos().subscribe(
       {
         next: (data) => {
           this.todos = data
-          this.todos = this.todos.filter(todo => todo.status === 1)
+  
       }
     }
     )
@@ -37,6 +40,48 @@ export class AppComponent {
         next: (data) => {
           this.getTodos()
           this.description = ''
+        }
+      }
+    )
+  }
+
+  updateTodo(){
+    this.todoEdit.description = this.descriptionEdit
+    this.backendService.updateTodo(this.todoEdit).subscribe(
+      {
+        next: data =>{
+          this.getTodos()
+        }
+      }
+    )
+  }
+  showModalUpdate = false
+  showModalDelete = false
+  toggleModalUpdate(todo:any = null){
+    if(todo !=null){
+      this.todoEdit = todo
+      this.descriptionEdit = todo.description
+    }
+    this.showModalUpdate = !this.showModalUpdate
+  }
+
+  toggleModalDelete(todo:any=null){
+    if(todo!== null){
+      this.deleteId = todo
+    }
+    this.showModalDelete = !this.showModalDelete
+  }
+  deleteTodo(){
+    console.log(this.deleteId);
+    
+    this.backendService.deleteTodo(this.deleteId.id).subscribe(
+      {
+        next: data => {
+          this.getTodos()
+        },
+        error: err =>{
+          console.log(err);
+          
         }
       }
     )
